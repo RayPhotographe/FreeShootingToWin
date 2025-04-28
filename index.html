@@ -128,7 +128,7 @@
 
   <script>
     (function() {
-      emailjs.init('TON_USER_ID_EMAILJS');
+      emailjs.init('DhsaxmPbH-NOyADwe');
     })();
 
     function togglePassword() {
@@ -165,7 +165,7 @@
         formData.append("photo", document.getElementById('photo').files[0]);
       }
 
-      emailjs.sendForm('TON_SERVICE_ID', 'TON_TEMPLATE_ID', form)
+      emailjs.sendForm('service_1e9p5on', 'template_x43fw04', form)
       .then(() => {
           alert("Merci pour votre participation! Les gagnants vous seront divulgués par courriel. Vous pouvez participer une autre fois avec une autre photo.");
       }, (error) => {
